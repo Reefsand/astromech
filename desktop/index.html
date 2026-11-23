@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
+  #scene { width: 100%; height: 100%; }
+  #scene svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .5)); }
+</style>
+</head>
+<body>
+<div id="scene"></div>
+<script>
+/*SCENE*/
+// Redraw only when a screen appears, goes or changes state: a redraw restarts the animations.
+let last = null
+window.update = list => {
+  const key = JSON.stringify(list.map(s => [s.id, s.status, s.topic]))
+  if (key === last) return
+  last = key
+  document.getElementById('scene').innerHTML = sceneSvg(list)
+  report()
+}
+// Tells the app where each screen is drawn, so a double click can open its conversation.
+function report() {
+  const rects = [...document.querySelectorAll('[data-id]')].map(el => {
+    const r = el.getBoundingClientRect()
+    return { id: el.dataset.id, x: r.left, y: r.top, w: r.width, h: r.height }
+  })
+  window.webkit?.messageHandlers?.screens?.postMessage(rects)
+}
+window.addEventListener('resize', report)
+update([])
+</script>
+</body>
+</html>

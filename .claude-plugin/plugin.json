@@ -1,0 +1,6 @@
+{
+  "name": "astromech",
+  "version": "0.1.0",
+  "description": "Un petit droïde qui s'agite quand Claude travaille, avec un écran par session en cours (code qui s'écrit, ?, !, done).",
+  "types": "./types/index.d.ts"
+}
