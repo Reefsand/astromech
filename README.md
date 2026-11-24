@@ -16,6 +16,7 @@ Deux morceaux, utilisables séparément :
 |---|---|---|
 | **Le mod** (`hooks/`) | un mod Claude Code | dans la colonne de droite de l'app Claude |
 | **Le droïde flottant** (`desktop/`) | une petite app Mac | au-dessus de toutes les fenêtres, déplaçable |
+| **Le droïde flottant pour PC** (`pc/`) | une petite app Windows | pareil, sur Windows : voir [pc/README.md](pc/README.md) |
 
 ## Installer le mod (Claude Code)
 
@@ -42,6 +43,11 @@ Il lit, sans rien y modifier :
 - les discussions Codex de l'app ChatGPT ou de la ligne de commande (`~/.codex/sessions`).
 
 Rien ne quitte ton Mac.
+
+## Installer le droïde flottant (PC)
+
+Lance `Astromech-Setup-0.1.0.exe`, construit par `npm run dist` dans `pc/`. Tout est
+expliqué dans [pc/README.md](pc/README.md) (raccourcis Ctrl+Alt+R et Ctrl+Alt+M).
 
 ## Commandes
 

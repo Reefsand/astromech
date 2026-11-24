@@ -110,11 +110,12 @@ const setStatus = async ($: Engine, status: ScreenStatus) => {
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
-    const home = (await $.env.get('HOME')) ?? ''
+    // Windows has USERPROFILE where macOS and Linux have HOME.
+    const home = (await $.env.get('HOME')) ?? (await $.env.get('USERPROFILE')) ?? ''
     dir = `${home}/.claude/astromech/sessions`
     const id = await $.session.id()
     const cwd = await $.session.cwd()
-    defaultTopic = cwd.split('/').filter(Boolean).pop() ?? 'session'
+    defaultTopic = cwd.split(/[\\/]/).filter(Boolean).pop() ?? 'session'
     const now = Date.now()
     try {
       me = JSON.parse(await $.fs.read(fileOf(id))) as Screen
@@ -150,8 +151,14 @@ export const register: Register = on => {
     }
     const action = DESKTOP_WORDS[word]
     if (!action) return { text: `Mots compris : ${Object.keys(DESKTOP_WORDS).join(', ')}.` }
-    const run = await $.process.run(['open', '-g', `astromech://${action[0]}`]).catch(() => undefined)
-    if (!run || run.exitCode !== 0) return { text: "Le droïde flottant (Astromech.app) n'est pas installé sur ce Mac." }
+    const link = `astromech://${action[0]}`
+    const isWindows = (await $.env.get('OS')) === 'Windows_NT'
+    const run = await $.process
+      .run(isWindows ? ['rundll32', 'url.dll,FileProtocolHandler', link] : ['open', '-g', link])
+      .catch(() => undefined)
+    if (!run || run.exitCode !== 0) {
+      return { text: `Le droïde flottant (Astromech) n'est pas installé sur ${isWindows ? 'ce PC' : 'ce Mac'}.` }
+    }
     return { text: action[1] }
   })
 

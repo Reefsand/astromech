@@ -1,0 +1,57 @@
+{
+  "name": "astromech",
+  "productName": "Astromech",
+  "version": "0.1.0",
+  "description": "Le droïde flottant d'Astromech, pour Windows.",
+  "license": "MIT",
+  "private": true,
+  "main": "app/main.js",
+  "scripts": {
+    "prepare-app": "node build.mjs",
+    "start": "node build.mjs && electron .",
+    "snapshot": "node build.mjs && electron . --snapshot",
+    "dist": "node build.mjs && electron-builder --win --x64"
+  },
+  "devDependencies": {
+    "electron": "45.4.1",
+    "electron-builder": "26.0.12",
+    "resedit": "2.0.3"
+  },
+  "build": {
+    "appId": "local.astromech.droid",
+    "productName": "Astromech",
+    "copyright": "MIT",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "app/**/*",
+      "package.json"
+    ],
+    "protocols": [
+      {
+        "name": "Astromech",
+        "schemes": ["astromech"]
+      }
+    ],
+    "afterPack": "./after-pack.cjs",
+    "win": {
+      "target": ["nsis", "zip"],
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false,
+      "artifactName": "Astromech-${version}-portable.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "runAfterFinish": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Astromech",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "artifactName": "Astromech-Setup-${version}.exe"
+    }
+  }
+}
