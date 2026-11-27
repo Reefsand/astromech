@@ -48,7 +48,7 @@ L'app s'installe dans le dossier Applications commun : chaque utilisateur du Mac
 
 ## Installer le droïde flottant (PC)
 
-Lance `Astromech-Setup-0.1.0.exe`, construit par `npm run dist` dans `pc/`. Tout est
+Lance `Astromech-Setup-0.1.1.exe`, construit par `npm run dist` dans `pc/`. Tout est
 expliqué dans [pc/README.md](pc/README.md) (raccourcis Ctrl+Alt+R et Ctrl+Alt+M).
 
 ## Commandes

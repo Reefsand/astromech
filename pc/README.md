@@ -5,11 +5,11 @@ règles et mêmes commandes que l'app Mac. C'est une petite app Electron.
 
 ## Installer
 
-Lance `Astromech-Setup-0.1.0.exe` : il s'installe pour ton compte seulement, sans droits
+Lance `Astromech-Setup-0.1.1.exe` : il s'installe pour ton compte seulement, sans droits
 administrateur, puis s'ouvre. Le droïde apparaît en bas à droite de l'écran, et une petite
 tête de droïde s'ajoute dans la zone de notification, près de l'horloge.
 
-Sinon, le zip portable (`Astromech-0.1.0-portable.zip`) : à décompresser n'importe où, puis
+Sinon, le zip portable (`Astromech-0.1.1-portable.zip`) : à décompresser n'importe où, puis
 ouvrir `Astromech.exe`.
 
 L'app n'est pas signée : au premier lancement, Windows SmartScreen peut afficher
