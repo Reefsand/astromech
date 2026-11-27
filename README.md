@@ -35,7 +35,7 @@ Il faut macOS 13 ou plus, les outils de développement d'Apple (`xcode-select --
 ```bash
 git clone https://github.com/Reefsand/astromech.git
 zsh astromech/desktop/build.sh
-open ~/Applications/Astromech.app
+open /Applications/Astromech.app
 ```
 
 Il lit, sans rien y modifier :
@@ -43,6 +43,8 @@ Il lit, sans rien y modifier :
 - les discussions Codex de l'app ChatGPT ou de la ligne de commande (`~/.codex/sessions`).
 
 Rien ne quitte ton Mac.
+
+L'app s'installe dans le dossier Applications commun : chaque utilisateur du Mac peut l'ouvrir, avec ses propres réglages (taille, son, couleur). Dans son menu, **Couleur** propose le droïde **Classique** ou **Néon rose et bleu**.
 
 ## Installer le droïde flottant (PC)
 

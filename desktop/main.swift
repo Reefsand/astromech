@@ -226,6 +226,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         isReady = true
+        applyTheme()
         poll()
         // `--snapshot <file.png>`: writes what the droid draws, then quits (a check that needs no screen capture).
         let args = CommandLine.arguments
@@ -353,6 +354,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         sizeItem.submenu = sizes
         menu.addItem(sizeItem)
 
+        let colors = NSMenu()
+        for (title, value) in [("Classique", "classic"), ("Néon rose et bleu", "neon")] {
+            let item = NSMenuItem(title: title, action: #selector(setTheme(_:)), keyEquivalent: "")
+            item.representedObject = value
+            item.state = theme == value ? .on : .off
+            item.target = self
+            colors.addItem(item)
+        }
+        let colorItem = NSMenuItem(title: "Couleur", action: nil, keyEquivalent: "")
+        colorItem.submenu = colors
+        menu.addItem(colorItem)
+
         let tip = NSMenuItem(title: "Glisse le droïde pour le déplacer, double-clic pour ouvrir Claude", action: nil, keyEquivalent: "")
         tip.isEnabled = false
         menu.addItem(tip)
@@ -384,6 +397,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let frame = NSRect(x: old.maxX - size.width, y: old.minY, width: size.width, height: size.height)
         panel.setFrame(frame, display: true, animate: true)
         handle.droid = droidFrame(for: size)
+        refreshMenu()
+    }
+
+    /// The droid's colours, chosen per user in the menu (`--theme <name>` overrides it, for snapshots).
+    var theme: String {
+        let args = CommandLine.arguments
+        if let i = args.firstIndex(of: "--theme"), i + 1 < args.count { return args[i + 1] }
+        return defaults.string(forKey: "theme") ?? "classic"
+    }
+
+    func applyTheme() {
+        guard isReady else { return }
+        web.evaluateJavaScript("setTheme(\"\(theme)\")", completionHandler: nil)
+    }
+
+    @objc func setTheme(_ sender: NSMenuItem) {
+        guard let value = sender.representedObject as? String else { return }
+        defaults.set(value, forKey: "theme")
+        applyTheme()
         refreshMenu()
     }
 

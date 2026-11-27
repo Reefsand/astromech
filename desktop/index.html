@@ -12,14 +12,47 @@
 <div id="scene"></div>
 <script>
 /*SCENE*/
+// The droid's colours: "classic" is the drawing as it is; the others swap its paint, never
+// the screens' or the eye's status colours.
+const THEMES = {
+  classic: {},
+  neon: {
+    '#f1f3f7': '#ffe6f4', // body
+    '#c9d1db': '#4cc9ff', // dome
+    '#d8dde6': '#cdb8ff', // legs
+    '#9aa4b2': '#8b5cff', // feet
+    '#8b95a5': '#7a3fd0', // outlines and stripes
+    '#d97757': '#ff2e93', // panels and dome band
+    '#ff8a3d': '#ff5ec4', // eye at rest
+    '#3fb6ff': '#7df9ff', // blinking light and beeps
+    '#1b2230': '#2a1240', // eye socket
+  },
+}
+let theme = 'classic'
+const paint = svg => {
+  const map = THEMES[theme] || {}
+  const at = svg.lastIndexOf('<g transform="translate(') // the droid is drawn last
+  if (at < 0 || !Object.keys(map).length) return svg
+  const bot = svg.slice(at).replace(/#[0-9a-f]{6}/gi, c => map[c.toLowerCase()] || c)
+  return svg.slice(0, at) + bot
+}
 // Redraw only when a screen appears, goes or changes state: a redraw restarts the animations.
 let last = null
+let current = []
+const draw = () => {
+  document.getElementById('scene').innerHTML = paint(sceneSvg(current))
+  report()
+}
 window.update = list => {
   const key = JSON.stringify(list.map(s => [s.id, s.status, s.topic]))
   if (key === last) return
   last = key
-  document.getElementById('scene').innerHTML = sceneSvg(list)
-  report()
+  current = list
+  draw()
+}
+window.setTheme = name => {
+  theme = THEMES[name] ? name : 'classic'
+  draw()
 }
 // Tells the app where each screen is drawn, so a double click can open its conversation.
 function report() {

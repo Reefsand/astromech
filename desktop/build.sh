@@ -1,10 +1,10 @@
 #!/bin/zsh
-# Builds Astromech.app (the floating droid) into ~/Applications, or into the folder given.
+# Builds Astromech.app (the floating droid) into /Applications (shared by every user of the Mac), or into the folder given.
 # The drawing is the mod's own hooks/svg.ts, so the app and the widget look the same.
 set -euo pipefail
 
 HERE=${0:A:h}
-OUT=${1:-$HOME/Applications}
+OUT=${1:-/Applications}
 APP="$OUT/Astromech.app"
 WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
